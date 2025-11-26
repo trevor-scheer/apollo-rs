@@ -179,7 +179,10 @@ fn to_span(location: SourceSpan, sources: &SourceMap) -> Option<AriadneSpan> {
     } else {
         // Adjust byte offsets to account for prepended newlines/spaces in wrapped source
         let adjustment = (source.offset.line - 1) + (source.offset.column - 1);
-        (location.offset() + adjustment, location.end_offset() + adjustment)
+        (
+            location.offset() + adjustment,
+            location.end_offset() + adjustment,
+        )
     };
     Some((location.file_id, start..end))
 }

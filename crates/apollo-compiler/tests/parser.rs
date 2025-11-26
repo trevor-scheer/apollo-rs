@@ -123,7 +123,10 @@ fn it_parses_with_column_offset() {
 fn it_reports_errors_with_line_offset() {
     // Test that errors report correct line/column with offset
     let source = "type Query { field: }"; // missing type
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 10, column: 1 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 10,
+        column: 1,
+    });
     let result = parser.parse_ast(source, "test.graphql");
 
     assert!(result.is_err());
@@ -140,7 +143,10 @@ fn it_reports_errors_with_line_offset() {
 fn it_reports_errors_with_column_offset() {
     // Test that errors report correct column with offset
     let source = "type Query { field: }"; // missing type
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 1, column: 20 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 1,
+        column: 20,
+    });
     let result = parser.parse_ast(source, "test.graphql");
 
     assert!(result.is_err());
@@ -180,7 +186,10 @@ type Query {
     field: InvalidType
 }
 "#;
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 100, column: 1 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 100,
+        column: 1,
+    });
     let result = parser.parse_schema(source, "test.graphql");
 
     // Even with validation errors about InvalidType, parsing should succeed
@@ -205,7 +214,10 @@ type Query {
 fn it_formats_errors_with_offset() {
     // Test that error formatting includes correct line numbers
     let source = "type Query { field }"; // missing colon and type
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 50, column: 10 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 50,
+        column: 10,
+    });
     let result = parser.parse_schema(source, "embedded.graphql");
 
     assert!(result.is_err());
@@ -235,7 +247,10 @@ fn it_works_with_schema_builder() {
     use apollo_compiler::Schema;
 
     let source = "type Query { field: String }";
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 20, column: 5 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 20,
+        column: 5,
+    });
 
     let mut builder = Schema::builder();
     parser.parse_into_schema_builder(source, "file1.graphql", &mut builder);
@@ -254,7 +269,10 @@ fn it_works_with_executable_documents() {
 
     // Parse an executable document with offset
     let query = "query { field }";
-    let mut parser = Parser::new().source_offset(SourceOffset { line: 30, column: 10 });
+    let mut parser = Parser::new().source_offset(SourceOffset {
+        line: 30,
+        column: 10,
+    });
     let result = parser.parse_executable(&schema, query, "query.graphql");
 
     assert!(result.is_ok());
