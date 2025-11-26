@@ -229,14 +229,6 @@ impl Parser {
         });
         Arc::make_mut(&mut errors.sources).insert(file_id, source_file.clone());
 
-        // Calculate the byte offset adjustment for wrapped source text
-        let offset_adjustment = if self.offset == SourceOffset::default() {
-            0
-        } else {
-            // Number of bytes prepended: (line - 1) newlines + (column - 1) spaces
-            (self.offset.line - 1) + (self.offset.column - 1)
-        };
-
         for parser_error in tree.errors() {
             // Silently skip parse errors at index beyond 4 GiB.
             // Rowan in apollo-parser might complain about files that large
@@ -248,12 +240,11 @@ impl Parser {
                 continue;
             };
 
-            // Adjust byte offsets to account for prepended text in wrapped source
-            let index_u32: u32 = index.into();
-            let adjusted_index = rowan::TextSize::from(index_u32 + offset_adjustment as u32);
+            // Store byte offsets relative to the original source (not wrapped)
+            // The adjustment for wrapped source will be applied when converting to line/column
             let location = Some(SourceSpan {
                 file_id,
-                text_range: rowan::TextRange::at(adjusted_index, len),
+                text_range: rowan::TextRange::at(index, len),
             });
             let details = if parser_error.is_limit() {
                 Details::ParserLimit {
@@ -744,14 +735,28 @@ impl SourceSpan {
     /// The line and column numbers of [`Self::offset`]
     pub fn line_column(&self, sources: &SourceMap) -> Option<LineColumn> {
         let source = sources.get(&self.file_id)?;
-        source.get_line_column(self.offset())
+        // Adjust offset to account for prepended newlines/spaces in wrapped source
+        let adjusted_offset = if source.offset == SourceOffset::default() {
+            self.offset()
+        } else {
+            let adjustment = (source.offset.line - 1) + (source.offset.column - 1);
+            self.offset() + adjustment
+        };
+        source.get_line_column(adjusted_offset)
     }
 
     /// The line and column numbers of the range from [`Self::offset`] to [`Self::end_offset`]
     /// inclusive.
     pub fn line_column_range(&self, sources: &SourceMap) -> Option<Range<LineColumn>> {
         let source = sources.get(&self.file_id)?;
-        source.get_line_column_range(self.offset()..self.end_offset())
+        // Adjust offsets to account for prepended newlines/spaces in wrapped source
+        let (adjusted_start, adjusted_end) = if source.offset == SourceOffset::default() {
+            (self.offset(), self.end_offset())
+        } else {
+            let adjustment = (source.offset.line - 1) + (source.offset.column - 1);
+            (self.offset() + adjustment, self.end_offset() + adjustment)
+        };
+        source.get_line_column_range(adjusted_start..adjusted_end)
     }
 }
 

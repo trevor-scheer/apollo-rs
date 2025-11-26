@@ -171,9 +171,16 @@ impl<T: ToCliReport> ToCliReport for &T {
 type AriadneSpan = (FileId, Range<usize>);
 
 /// Translate a SourceSpan into an ariadne span type.
-fn to_span(location: SourceSpan) -> Option<AriadneSpan> {
-    let start = location.offset();
-    let end = location.end_offset();
+/// Applies source offset adjustment to byte positions for wrapped sources.
+fn to_span(location: SourceSpan, sources: &SourceMap) -> Option<AriadneSpan> {
+    let source = sources.get(&location.file_id)?;
+    let (start, end) = if source.offset == crate::parser::SourceOffset::default() {
+        (location.offset(), location.end_offset())
+    } else {
+        // Adjust byte offsets to account for prepended newlines/spaces in wrapped source
+        let adjustment = (source.offset.line - 1) + (source.offset.column - 1);
+        (location.offset() + adjustment, location.end_offset() + adjustment)
+    };
     Some((location.file_id, start..end))
 }
 
@@ -205,7 +212,7 @@ impl<'s> CliReport<'s> {
         color: Color,
     ) -> Self {
         let span = main_location
-            .and_then(to_span)
+            .and_then(|loc| to_span(loc, sources))
             .unwrap_or((FileId::NONE, 0..0));
         let report = ariadne::Report::build(ReportKind::Error, span);
         let enable_color = match color {
@@ -242,7 +249,7 @@ impl<'s> CliReport<'s> {
 
     /// Add a label at a given location. If the location is `None`, the message is discarded.
     pub fn with_label_opt(&mut self, location: Option<SourceSpan>, message: impl ToString) {
-        if let Some(span) = location.and_then(to_span) {
+        if let Some(span) = location.and_then(|loc| to_span(loc, self.sources)) {
             self.report.add_label(
                 ariadne::Label::new(span)
                     .with_message(message)
