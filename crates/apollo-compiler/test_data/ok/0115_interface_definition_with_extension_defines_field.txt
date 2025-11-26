@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         44: SourceFile {
             path: "0115_interface_definition_with_extension_defines_field.graphql",
             source_text: "type Query {\n    foo: Node\n}\n\ninterface Node\n\nextend interface Node {\n    bar: String\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -95,10 +103,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         44: SourceFile {
             path: "0115_interface_definition_with_extension_defines_field.graphql",
             source_text: "type Query {\n    foo: Node\n}\n\ninterface Node\n\nextend interface Node {\n    bar: String\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         46: SourceFile {
             path: "0117_subscription_conditions_not_at_root.graphql",
             source_text: "subscription ConditionalSub($includeContent: Boolean = true, $small: Boolean = true) {\n    messages {\n        username\n        text @include(if: $includeContent)\n        avatar @skip(if: $small)\n    }\n}\n\ntype Query {\n    hello: String\n}\n\ntype Message {\n    username: String\n    text: String\n    avatar: String\n}\n\ntype Subscription {\n    messages: Message\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -140,10 +148,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         46: SourceFile {
             path: "0117_subscription_conditions_not_at_root.graphql",
             source_text: "subscription ConditionalSub($includeContent: Boolean = true, $small: Boolean = true) {\n    messages {\n        username\n        text @include(if: $includeContent)\n        avatar @skip(if: $small)\n    }\n}\n\ntype Query {\n    hello: String\n}\n\ntype Message {\n    username: String\n    text: String\n    avatar: String\n}\n\ntype Subscription {\n    messages: Message\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

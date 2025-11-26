@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         25: SourceFile {
             path: "0024_used_variables_in_directives.graphql",
             source_text: "type Query {\n  field(arg: Boolean): Int\n  fragField: Int\n  inlineField: Int\n}\n\nfragment fragment on Query {\n  fragField @include(if: $indirectDirective)\n}\n\nquery (\n  $fieldDirective: Boolean = true,\n  $fragDirective: Boolean = false,\n  $inlineDirective: Boolean = false,\n  $argDirective: Boolean = false,\n  $indirectDirective: Boolean = false,\n) {\n  field(arg: $argDirective) @skip(if: $fieldDirective)\n\n  ...fragment @include(if: $fragDirective)\n\n  ... @skip(if: $inlineDirective) {\n    inlineField\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -102,10 +110,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         25: SourceFile {
             path: "0024_used_variables_in_directives.graphql",
             source_text: "type Query {\n  field(arg: Boolean): Int\n  fragField: Int\n  inlineField: Int\n}\n\nfragment fragment on Query {\n  fragField @include(if: $indirectDirective)\n}\n\nquery (\n  $fieldDirective: Boolean = true,\n  $fragDirective: Boolean = false,\n  $inlineDirective: Boolean = false,\n  $argDirective: Boolean = false,\n  $indirectDirective: Boolean = false,\n) {\n  field(arg: $argDirective) @skip(if: $fieldDirective)\n\n  ...fragment @include(if: $fragDirective)\n\n  ... @skip(if: $inlineDirective) {\n    inlineField\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

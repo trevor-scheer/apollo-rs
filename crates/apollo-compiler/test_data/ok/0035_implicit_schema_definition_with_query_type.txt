@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         36: SourceFile {
             path: "0035_implicit_schema_definition_with_query_type.graphql",
             source_text: "type Query {\n    name: String\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -67,10 +75,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         36: SourceFile {
             path: "0035_implicit_schema_definition_with_query_type.graphql",
             source_text: "type Query {\n    name: String\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

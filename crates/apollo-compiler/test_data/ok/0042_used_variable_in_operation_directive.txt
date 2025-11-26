@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         43: SourceFile {
             path: "0042_used_variable_in_operation_directive.graphql",
             source_text: "directive @x(y: Int!) on QUERY | MUTATION | SUBSCRIPTION\ndirective @z(f: Boolean) on FRAGMENT_DEFINITION\n\ntype Query { field: Boolean }\ntype Mutation { field: Boolean }\ntype Subscription { field: Boolean }\n\nquery Q ($a: Int!, $f: Boolean) @x(y: $a) { field ...f }\nmutation M ($b: Int!) @x(y: $b) { field }\nsubscription S ($c: Int!) @x(y: $c) { field }\n\nfragment f on Query @z(f: $f) { field }\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -162,10 +170,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         43: SourceFile {
             path: "0042_used_variable_in_operation_directive.graphql",
             source_text: "directive @x(y: Int!) on QUERY | MUTATION | SUBSCRIPTION\ndirective @z(f: Boolean) on FRAGMENT_DEFINITION\n\ntype Query { field: Boolean }\ntype Mutation { field: Boolean }\ntype Subscription { field: Boolean }\n\nquery Q ($a: Int!, $f: Boolean) @x(y: $a) { field ...f }\nmutation M ($b: Int!) @x(y: $b) { field }\nsubscription S ($c: Int!) @x(y: $c) { field }\n\nfragment f on Query @z(f: $f) { field }\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

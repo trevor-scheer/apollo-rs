@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         12: SourceFile {
             path: "0010_operation_with_defined_fields.graphql",
             source_text: "query getProduct {\n  size\n  topProducts {\n    name\n    inStock\n  }\n}\n\ntype Query {\n  topProducts: Product\n  name: String\n  size: Int\n}\n\ntype Product {\n  inStock: Boolean @join__field(graph: INVENTORY)\n  name: String @join__field(graph: PRODUCTS)\n  price: Int\n  shippingEstimate: Int\n  upc: String!\n  weight: Int\n}\n\ndirective @join__field(graph: join__Graph) on FIELD_DEFINITION\nenum join__Graph {\n  INVENTORY,\n  PRODUCTS,\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -242,10 +250,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         12: SourceFile {
             path: "0010_operation_with_defined_fields.graphql",
             source_text: "query getProduct {\n  size\n  topProducts {\n    name\n    inStock\n  }\n}\n\ntype Query {\n  topProducts: Product\n  name: String\n  size: Int\n}\n\ntype Product {\n  inStock: Boolean @join__field(graph: INVENTORY)\n  name: String @join__field(graph: PRODUCTS)\n  price: Int\n  shippingEstimate: Int\n  upc: String!\n  weight: Int\n}\n\ndirective @join__field(graph: join__Graph) on FIELD_DEFINITION\nenum join__Graph {\n  INVENTORY,\n  PRODUCTS,\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

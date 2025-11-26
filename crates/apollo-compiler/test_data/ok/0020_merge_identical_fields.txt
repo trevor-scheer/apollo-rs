@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         22: SourceFile {
             path: "0020_merge_identical_fields.graphql",
             source_text: "type Query {\n  pet: Dog\n}\n\ntype Dog {\n  nickname: String\n  name: String!\n}\n\nquery queryPupper {\n  pet {\n    ...mergeIdenticalFields\n    ...mergeIdenticalAliasesAndFields\n  }\n}\n\nfragment mergeIdenticalFields on Dog {\n  name\n  name\n}\n\nfragment mergeIdenticalAliasesAndFields on Dog {\n  otherName: name\n  otherName: name\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -101,10 +109,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         22: SourceFile {
             path: "0020_merge_identical_fields.graphql",
             source_text: "type Query {\n  pet: Dog\n}\n\ntype Dog {\n  nickname: String\n  name: String!\n}\n\nquery queryPupper {\n  pet {\n    ...mergeIdenticalFields\n    ...mergeIdenticalAliasesAndFields\n  }\n}\n\nfragment mergeIdenticalFields on Dog {\n  name\n  name\n}\n\nfragment mergeIdenticalAliasesAndFields on Dog {\n  otherName: name\n  otherName: name\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

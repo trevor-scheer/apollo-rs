@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         13: SourceFile {
             path: "0011_fragment_spreads_in_fragment_definitions.graphql",
             source_text: "query IntrospectionQuery {\n  foo {\n    ...Bar\n  }\n}\n\nfragment Bar on Foo {\n  baz {\n    ...Quux\n  }\n}\n\nfragment Quux on Baz {\n  id\n}\n\ntype Query {\n  foo: Foo\n}\n\ntype Foo {\n  baz: Baz\n}\n\ntype Baz {\n  id: ID\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -112,10 +120,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         13: SourceFile {
             path: "0011_fragment_spreads_in_fragment_definitions.graphql",
             source_text: "query IntrospectionQuery {\n  foo {\n    ...Bar\n  }\n}\n\nfragment Bar on Foo {\n  baz {\n    ...Quux\n  }\n}\n\nfragment Quux on Baz {\n  id\n}\n\ntype Query {\n  foo: Foo\n}\n\ntype Foo {\n  baz: Baz\n}\n\ntype Baz {\n  id: ID\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

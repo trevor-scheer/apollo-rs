@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         39: SourceFile {
             path: "0038_argument_default.graphql",
             source_text: "directive @defer(\n  label: String\n  if: Boolean! = true\n) on FRAGMENT_SPREAD | INLINE_FRAGMENT\n\ntype Query {\n  guitarAmp(upTo: Int! = 11): String\n}\n\n{\n  ... @defer {\n    guitarAmp\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -115,10 +123,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         39: SourceFile {
             path: "0038_argument_default.graphql",
             source_text: "directive @defer(\n  label: String\n  if: Boolean! = true\n) on FRAGMENT_SPREAD | INLINE_FRAGMENT\n\ntype Query {\n  guitarAmp(upTo: Int! = 11): String\n}\n\n{\n  ... @defer {\n    guitarAmp\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

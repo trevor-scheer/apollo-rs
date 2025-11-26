@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         15: SourceFile {
             path: "0013_operation_with_used_variable_in_fragment.graphql",
             source_text: "query ExampleQuery($variable: Int) {\n  topProducts {\n    name\n  }\n  ... subFrag\n}\n\nfragment subFrag on Query {\n  topProducts {\n    price(setPrice: $variable)\n  }\n}\n\ntype Query {\n  topProducts(first: Int): Product,\n  reviews: Review\n}\n\ntype Review {\n  message: Message\n}\n\ntype Message {\n  body: String\n  sender(attribute: String): String\n}\n\ntype Product {\n  name: String\n  price(setPrice: Int): Int\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -200,10 +208,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         15: SourceFile {
             path: "0013_operation_with_used_variable_in_fragment.graphql",
             source_text: "query ExampleQuery($variable: Int) {\n  topProducts {\n    name\n  }\n  ... subFrag\n}\n\nfragment subFrag on Query {\n  topProducts {\n    price(setPrice: $variable)\n  }\n}\n\ntype Query {\n  topProducts(first: Int): Product,\n  reviews: Review\n}\n\ntype Review {\n  message: Message\n}\n\ntype Message {\n  body: String\n  sender(attribute: String): String\n}\n\ntype Product {\n  name: String\n  price(setPrice: Int): Int\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

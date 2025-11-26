@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         48: SourceFile {
             path: "0119_directive_with_argument_type_collisions.graphql",
             source_text: "directive @custom(input: Custom) on OBJECT | INTERFACE\n\ninput Custom {\n  name: String\n  nested: Custom\n}\n\ntype Query @custom(input: {name: \"hello\", nested: {name: \"hello\"}}) {\n  foo: String\n}\n\nquery myQuery {\n  foo\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -155,10 +163,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         48: SourceFile {
             path: "0119_directive_with_argument_type_collisions.graphql",
             source_text: "directive @custom(input: Custom) on OBJECT | INTERFACE\n\ninput Custom {\n  name: String\n  nested: Custom\n}\n\ntype Query @custom(input: {name: \"hello\", nested: {name: \"hello\"}}) {\n  foo: String\n}\n\nquery myQuery {\n  foo\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

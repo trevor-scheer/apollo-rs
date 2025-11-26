@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         3: SourceFile {
             path: "0001_annonymous_operation_definition.graphql",
             source_text: "\nquery {\n  cat {\n    name\n  }\n}\n\ntype Query {\n  cat: Pet\n}\n\ntype Pet {\n  name: String\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -89,10 +97,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         3: SourceFile {
             path: "0001_annonymous_operation_definition.graphql",
             source_text: "\nquery {\n  cat {\n    name\n  }\n}\n\ntype Query {\n  cat: Pet\n}\n\ntype Pet {\n  name: String\n}",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

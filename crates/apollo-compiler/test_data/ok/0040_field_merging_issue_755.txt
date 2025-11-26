@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         41: SourceFile {
             path: "0040_field_merging_issue_755.graphql",
             source_text: "# Different fragments selecting the same name from different types\n# into different subselections -- all valid, unless apollo-rs\n# propagates type conditions incorrectly :)\n\ntype Subselection {\n  createdAt: Int!\n}\n\ntype Issue {\n  createdAt: Int\n  subselection: [Subselection!]\n}\n\ntype Query {\n  issue755: Issue\n}\n\nfragment topLevelFragment on Issue {\n  subselection {\n    createdAt\n    ...subselectionFragment\n  }\n  ...collidingTopLevelFragment\n}\nfragment collidingTopLevelFragment on Issue {\n  subselection {\n    createdAt\n  }\n}\nfragment subselectionFragment on Subselection {\n  createdAt\n}\nquery  {\n  issue755 {\n    ...topLevelFragment\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -126,10 +134,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         41: SourceFile {
             path: "0040_field_merging_issue_755.graphql",
             source_text: "# Different fragments selecting the same name from different types\n# into different subselections -- all valid, unless apollo-rs\n# propagates type conditions incorrectly :)\n\ntype Subselection {\n  createdAt: Int!\n}\n\ntype Issue {\n  createdAt: Int\n  subselection: [Subselection!]\n}\n\ntype Query {\n  issue755: Issue\n}\n\nfragment topLevelFragment on Issue {\n  subselection {\n    createdAt\n    ...subselectionFragment\n  }\n  ...collidingTopLevelFragment\n}\nfragment collidingTopLevelFragment on Issue {\n  subselection {\n    createdAt\n  }\n}\nfragment subselectionFragment on Subselection {\n  createdAt\n}\nquery  {\n  issue755 {\n    ...topLevelFragment\n  }\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

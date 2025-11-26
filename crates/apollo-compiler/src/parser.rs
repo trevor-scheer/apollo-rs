@@ -36,6 +36,27 @@ use std::sync::atomic::AtomicU64;
 use std::sync::Arc;
 use std::sync::OnceLock;
 
+/// Starting position for a GraphQL document extracted from a larger source file.
+///
+/// Use this when parsing GraphQL embedded in other source files (e.g., template strings
+/// in TypeScript, Rust string literals) to get error diagnostics that point to the correct
+/// locations in the original source file.
+///
+/// Both line and column are 1-indexed.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct SourceOffset {
+    /// Starting line (1-indexed)
+    pub line: usize,
+    /// Starting column (1-indexed)
+    pub column: usize,
+}
+
+impl Default for SourceOffset {
+    fn default() -> Self {
+        Self { line: 1, column: 1 }
+    }
+}
+
 /// Configuration for parsing an input string as GraphQL syntax
 #[derive(Default, Debug, Clone)]
 pub struct Parser {
@@ -43,6 +64,7 @@ pub struct Parser {
     token_limit: Option<usize>,
     recursion_reached: usize,
     tokens_reached: usize,
+    offset: SourceOffset,
 }
 
 /// Records for validation information about a file that was parsed
@@ -51,6 +73,7 @@ pub struct SourceFile {
     pub(crate) path: PathBuf,
     pub(crate) source_text: String,
     pub(crate) source: OnceLock<ariadne::Source>,
+    pub(crate) offset: SourceOffset,
 }
 
 /// A map of source files relevant to a given document
@@ -122,6 +145,32 @@ impl Parser {
         self
     }
 
+    /// Set the starting line and column for this GraphQL document.
+    ///
+    /// Use this when parsing GraphQL embedded in other source files (e.g., template strings
+    /// in TypeScript, Rust string literals) to get error diagnostics that point to the correct
+    /// locations in the original source file.
+    ///
+    /// Both line and column are 1-indexed (the default is line 1, column 1).
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use apollo_compiler::parser::{Parser, SourceOffset};
+    /// use apollo_compiler::Schema;
+    ///
+    /// // GraphQL starting at line 10, column 5 in a TypeScript file
+    /// let schema_text = "type Query { field: String }";
+    /// let mut parser = Parser::new()
+    ///     .source_offset(SourceOffset { line: 10, column: 5 });
+    /// let result = parser.parse_schema(schema_text, "file.ts");
+    /// // Errors will report locations starting from line 10, column 5
+    /// ```
+    pub fn source_offset(mut self, offset: SourceOffset) -> Self {
+        self.offset = offset;
+        self
+    }
+
     /// Parse the given source text into an AST document.
     ///
     /// `path` is the filesystem path (or arbitrary string) used in diagnostics
@@ -176,21 +225,35 @@ impl Parser {
             path,
             source_text,
             source: OnceLock::new(),
+            offset: self.offset,
         });
-        Arc::make_mut(&mut errors.sources).insert(file_id, source_file);
+        Arc::make_mut(&mut errors.sources).insert(file_id, source_file.clone());
+
+        // Calculate the byte offset adjustment for wrapped source text
+        let offset_adjustment = if self.offset == SourceOffset::default() {
+            0
+        } else {
+            // Number of bytes prepended: (line - 1) newlines + (column - 1) spaces
+            (self.offset.line - 1) + (self.offset.column - 1)
+        };
+
         for parser_error in tree.errors() {
             // Silently skip parse errors at index beyond 4 GiB.
             // Rowan in apollo-parser might complain about files that large
             // before we get here anyway.
-            let Ok(index) = parser_error.index().try_into() else {
+            let Ok(index): Result<rowan::TextSize, _> = parser_error.index().try_into() else {
                 continue;
             };
-            let Ok(len) = parser_error.data().len().try_into() else {
+            let Ok(len): Result<rowan::TextSize, _> = parser_error.data().len().try_into() else {
                 continue;
             };
+
+            // Adjust byte offsets to account for prepended text in wrapped source
+            let index_u32: u32 = index.into();
+            let adjusted_index = rowan::TextSize::from(index_u32 + offset_adjustment as u32);
             let location = Some(SourceSpan {
                 file_id,
-                text_range: rowan::TextRange::at(index, len),
+                text_range: rowan::TextRange::at(adjusted_index, len),
             });
             let details = if parser_error.is_limit() {
                 Details::ParserLimit {
@@ -470,15 +533,35 @@ impl SourceFile {
 
     pub(crate) fn ariadne(&self) -> &ariadne::Source {
         self.source.get_or_init(|| {
-            // FIXME This string copy is not ideal, but changing to a reference counted string affects
-            // public API
-            ariadne::Source::from(self.source_text.clone())
+            if self.offset == SourceOffset::default() {
+                // No offset, use source directly
+                ariadne::Source::from(self.source_text.clone())
+            } else {
+                // Apply offset by prepending newlines and spaces
+                // This shifts the source text so ariadne computes the correct line/column numbers
+                let mut shifted = String::new();
+
+                // Add (line - 1) newlines to shift down
+                for _ in 1..self.offset.line {
+                    shifted.push('\n');
+                }
+
+                // Add (column - 1) spaces to shift right
+                for _ in 1..self.offset.column {
+                    shifted.push(' ');
+                }
+
+                shifted.push_str(&self.source_text);
+                ariadne::Source::from(shifted)
+            }
         })
     }
 
     /// Get [`LineColumn`] for the given 0-indexed UTF-8 byte `offset` from the start of the file.
     ///
     /// Returns None if the offset is out of bounds.
+    ///
+    /// Note: The offset should already be adjusted if this SourceFile has an offset applied.
     pub fn get_line_column(&self, offset: usize) -> Option<LineColumn> {
         let (_, zero_indexed_line, zero_indexed_column) = self.ariadne().get_byte_line(offset)?;
         Some(LineColumn {
@@ -502,7 +585,8 @@ impl std::fmt::Debug for SourceFile {
         let Self {
             path,
             source_text,
-            source: _, // Skipped: it’s a cache and would make debugging other things noisy
+            source: _, // Skipped: it's a cache and would make debugging other things noisy
+            offset,
         } = self;
         let mut debug_struct = f.debug_struct("SourceFile");
         debug_struct.field("path", path);
@@ -514,6 +598,7 @@ impl std::fmt::Debug for SourceFile {
                 &format_args!("include_str!(\"built_in.graphql\")"),
             );
         }
+        debug_struct.field("offset", offset);
         debug_struct.finish()
     }
 }

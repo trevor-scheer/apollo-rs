@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         42: SourceFile {
             path: "0041_unquoted_string_for_custom_scalar.graphql",
             source_text: "scalar Currency\n\ntype Query {\n  convertToUSD(amount: Int!, currency: Currency!): Int!\n}\n\nquery {\n  convertToUSD(amount: 100, currency: EUR)\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -94,10 +102,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         42: SourceFile {
             path: "0041_unquoted_string_for_custom_scalar.graphql",
             source_text: "scalar Currency\n\ntype Query {\n  convertToUSD(amount: Int!, currency: Currency!): Int!\n}\n\nquery {\n  convertToUSD(amount: 100, currency: EUR)\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {

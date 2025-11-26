@@ -3,10 +3,18 @@ Schema {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         4: SourceFile {
             path: "0002_multiple_named_operation_definitions.graphql",
             source_text: "query getCatName {\n  cat {\n    name\n  }\n}\n\nquery getOwnerName {\n  cat {\n    owner {\n      name\n    }\n  }\n}\n\n\ntype Query {\n  cat: Pet\n}\n\ntype Pet {\n  name: String,\n  owner: PetOwner\n}\n\ntype PetOwner {\n  name: String\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     schema_definition: SchemaDefinition {
@@ -123,10 +131,18 @@ ExecutableDocument {
         1: SourceFile {
             path: "built_in.graphql",
             source_text: include_str!("built_in.graphql"),
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
         4: SourceFile {
             path: "0002_multiple_named_operation_definitions.graphql",
             source_text: "query getCatName {\n  cat {\n    name\n  }\n}\n\nquery getOwnerName {\n  cat {\n    owner {\n      name\n    }\n  }\n}\n\n\ntype Query {\n  cat: Pet\n}\n\ntype Pet {\n  name: String,\n  owner: PetOwner\n}\n\ntype PetOwner {\n  name: String\n}\n",
+            offset: SourceOffset {
+                line: 1,
+                column: 1,
+            },
         },
     },
     operations: OperationMap {
